@@ -117,8 +117,8 @@ def seat(seats):
         return reserved
 
 def main():
-    outfile = open('output', 'w')
-    for line in fileinput.input(files='input'):
+    outfile = open('output.txt', 'w')
+    for line in fileinput.input(files='input.txt'):
         reserve = int(line[5:])
         reservation = seat(reserve)
         if len(reservation) == 1:
