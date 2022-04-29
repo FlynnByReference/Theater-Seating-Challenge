@@ -6,12 +6,12 @@ SEATROWS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 BUFFER = 'SSS'
 # Create 2D array of seats to represent 
 rows, cols = (10, 20)
-theatre = []
+theater = []
 for i in range(rows):
     col = ""
     for j in range(cols):
         col += 'S'
-    theatre.append(col)
+    theater.append(col)
 
 # Determine whether a row is empty
 def isEmpty(row):
@@ -42,7 +42,7 @@ def mostRoom(row):
     
 # Find a row to seat a party
 def findRow(seats):
-    # Rough ranking of ideal theatre rows
+    # Rough ranking of ideal theater rows
     ideal = [6, 7, 5, 8, 4, 9, 3, 2, 1, 0]
     # List of occupied but still available rows
     available = []
@@ -51,9 +51,9 @@ def findRow(seats):
     # Check if the first 7 rows in ideal ranking are empty
     # Most movie watchers don't like sitting up front
     for i in ideal[:7]:
-        if isEmpty(theatre[i]):
+        if isEmpty(theater[i]):
             return i
-        elif isAvailable(theatre[i], seats):
+        elif isAvailable(theater[i], seats):
             available.append(i)
         else:
             closed.append(i)
@@ -63,9 +63,9 @@ def findRow(seats):
 
     # Now check least desirable front 3 rows
     for i in ideal[6:]:
-        if isEmpty(theatre[i]):
+        if isEmpty(theater[i]):
             return i
-        elif isAvailable(theatre[i], seats):
+        elif isAvailable(theater[i], seats):
             available.append(i)
         else:
             closed.append(i)
@@ -83,18 +83,18 @@ def seat(seats):
     reserved = [seatRow]
     for i in range(seats):
         occupy += 'T'
-    # Theatre is full :(
+    # theater is full :(
     if seatRow == None:
-        print('theatre is full :(')
+        print('theater is full :(')
         return reserved
-    chosen = theatre[seatRow]
+    chosen = theater[seatRow]
     # Seats first party of the row in the middle
     if 'T' not in chosen:
         chosen = chosen.replace('S', '', len(occupy))
         midPoint = len(chosen)//2
-        theatre[seatRow] = chosen[:midPoint] + occupy + chosen[midPoint:]
-        for i in range(len(theatre[seatRow])):
-            if theatre[seatRow][i] == 'T':
+        theater[seatRow] = chosen[:midPoint] + occupy + chosen[midPoint:]
+        for i in range(len(theater[seatRow])):
+            if theater[seatRow][i] == 'T':
                 reserved.append(i + 1)
         return reserved
 
@@ -102,7 +102,7 @@ def seat(seats):
         taken = chosen.find('T')
         buffer = chosen[:taken]
         buffer = buffer[:len(buffer) - len(occupy + BUFFER)] + occupy + BUFFER
-        theatre[seatRow] = buffer + chosen[taken:]
+        theater[seatRow] = buffer + chosen[taken:]
         for i in range(len(occupy)):
             reserved.append(taken + i)
         return reserved
@@ -111,7 +111,7 @@ def seat(seats):
         taken = chosen.rfind('T')
         buffer = chosen[taken + 1:]
         buffer = BUFFER + occupy + buffer[len(BUFFER) + len(occupy):]
-        theatre[seatRow] = chosen[:taken + 1] + buffer
+        theater[seatRow] = chosen[:taken + 1] + buffer
         for i in range(len(occupy)):
             reserved.append(taken - (i + 1))
         return reserved
