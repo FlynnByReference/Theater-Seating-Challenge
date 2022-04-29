@@ -18,7 +18,7 @@ Where "R###" indicates a reservation number and the number after indicates how m
 
 The program will read the input file and determine line by line which seats to reserve for the customer. 
 
-To account for customer satisfaction on a first come, first serve basis, the program will assign the most preferable available seating to each customer. It does this by determining which rows are most desirable and checking availablity in each with a preference of seating a party closest to the middle. Since no one likes sitting in the very front of the movie theatre, the algorithm will only check for availability in the first 3 aisles if all other aisles are not available for the given party. 
+To account for customer satisfaction on a first come, first serve basis, the program will assign the most preferable available seating to each customer. It does this by determining which rows are most desirable and checking availablity in each with a preference of seating a party closest to the middle. Since no one likes sitting in the very front of the movie theater, the algorithm will only check for availability in the first 3 aisles if all other aisles are not available for the given party. 
 
 After the algorithm has chosen seats for a party, the program will create an output file called "output.txt" if one does not exist already and write to the file the reservation number and the seats assigned in the format:
 ```
