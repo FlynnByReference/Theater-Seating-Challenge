@@ -31,6 +31,7 @@ def isAvailable(row, seats):
         return True
     return False
 
+# Determines which side of the aisle has the most available seats
 def mostRoom(row):
     left = row.find('T')
     right = row.rfind('T')
@@ -88,6 +89,7 @@ def seat(seats):
         print('theater is full :(')
         return reserved
     chosen = theater[seatRow]
+
     # Seats first party of the row in the middle
     if 'T' not in chosen:
         chosen = chosen.replace('S', '', len(occupy))
@@ -98,6 +100,7 @@ def seat(seats):
                 reserved.append(i + 1)
         return reserved
 
+    # Seats the party on the left side of the aisle if it has the most available seats
     elif mostRoom(chosen) == 'left':
         taken = chosen.find('T')
         buffer = chosen[:taken]
@@ -107,6 +110,7 @@ def seat(seats):
             reserved.append(taken + i)
         return reserved
 
+    # Seats the party on the right side of the aisle if it has the most available seats
     elif mostRoom(chosen) == 'right':
         taken = chosen.rfind('T')
         buffer = chosen[taken + 1:]
@@ -117,14 +121,20 @@ def seat(seats):
         return reserved
 
 def main():
+    # Create an output file if one does not already exist or overwrite the existing output file
     outfile = open('output.txt', 'w')
+
+    # Reads each line of the input file and assigns theater seats to the reservation party based on the preference algorithm
     for line in fileinput.input(files='input.txt'):
         reserve = int(line[5:])
         reservation = seat(reserve)
-        if len(reservation) == 1:
-            print ('sorry')
         row = reservation[0]
         output = line[:5]
+        # If no seat numbers have been returned, there are no available seats for a party of the given size
+        if len(reservation) == 1:
+            output += 'No available seating'
+            break
+        # Write the seat numbers to the output file
         for i in range(len(reservation) - 1):
             if i == len(reservation) - 2:
                 output += SEATROWS[row] + str(reservation[i+1]) + '\n'
