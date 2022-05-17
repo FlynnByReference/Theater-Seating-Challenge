@@ -4,6 +4,8 @@ import fileinput
 SEATROWS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 # Three seat buffer
 BUFFER = 'SSS'
+# Number of available seats
+open = 200
 # Create 2D array of seats to represent 
 rows, cols = (10, 20)
 theater = []
@@ -78,7 +80,12 @@ def findRow(seats):
     return available[0]
 
 def seat(seats):
-    seatRow = findRow(seats)
+    # If more seats are being reserved than are availabe, return [0]
+    if(seats > open):
+        return [0]
+    # Check if reservation can fit in one row
+    if(seats <= 20):
+        seatRow = findRow(seats)
     occupy = ''
     reserved = [seatRow]
     for i in range(seats):
@@ -88,6 +95,7 @@ def seat(seats):
         print('theater is full :(')
         return reserved
     chosen = theater[seatRow]
+
     # Seats first party of the row in the middle
     if 'T' not in chosen:
         chosen = chosen.replace('S', '', len(occupy))
@@ -98,6 +106,7 @@ def seat(seats):
                 reserved.append(i + 1)
         return reserved
 
+    # Executed if more room is available on the left side of the aisle
     elif mostRoom(chosen) == 'left':
         taken = chosen.find('T')
         buffer = chosen[:taken]
@@ -107,6 +116,7 @@ def seat(seats):
             reserved.append(taken + i)
         return reserved
 
+    # Executed if more room is available on the right side of the aisle
     elif mostRoom(chosen) == 'right':
         taken = chosen.rfind('T')
         buffer = chosen[taken + 1:]
@@ -117,14 +127,23 @@ def seat(seats):
         return reserved
 
 def main():
+    # Create an output file if one does not exist already, overwrite it otherwise
     outfile = open('output.txt', 'w')
+    # For every line of the input file
     for line in fileinput.input(files='input.txt'):
         reserve = int(line[5:])
         reservation = seat(reserve)
+        # Check for no seat numbers
         if len(reservation) == 1:
+            # Check for more reservations than is available
+            if reservation == [0]:
+                output = 'Theater does not have enough seats to accomodate'
             print ('sorry')
+            continue
+        # variables for row and seat numbers
         row = reservation[0]
         output = line[:5]
+        # Write reservations out to the output file
         for i in range(len(reservation) - 1):
             if i == len(reservation) - 2:
                 output += SEATROWS[row] + str(reservation[i+1]) + '\n'
