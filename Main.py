@@ -33,6 +33,7 @@ def isAvailable(row, seats):
         return True
     return False
 
+# Determines which side of the aisle has the most available seats
 def mostRoom(row):
     left = row.find('T')
     right = row.rfind('T')
